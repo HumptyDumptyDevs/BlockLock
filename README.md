@@ -5,25 +5,27 @@ BlockLock was created during the Ethdam 2024 hackathon.
 ## Our purpose
 BlockLock attempts to redefine the definition of secure password management. We are addressing a crucial problem, the improper storage and hadnling of user's passwords.
 
+## What is BlockLock
+BlockLock is a web extension that works similarly to web2 password manager plugins like 1Pass, however the difference is that the storing of sensitve data is done on chain.
+We chose to store data on Oasis chain simply because they are privacy focused and it is easy to encrupt data and store it on chain.
 
-## Method and results
 
+## Layout
+This repo is made up of two main sections, the extension(React.js) and the sapphire smart contract(Solidity)
 
 
 ## Repository overview
 
+- extension: Front end of the extension.
+      - public: Images used are stored here.
+      - src: main functionallity of the app.
+          -components: React components.
+          -pages: pages for the extension.
+    
 
-├── README.md
-├── data
-├── gen
-│   ├── analysis
-│   ├── data-preparation
-│   └── paper
-└── src
-    ├── analysis
-    ├── data-preparation
-    └── paper
-
+- sapphire: Where the smart contracts of the app are.
+      - contracts: smart contract is stored here.
+      - test: tests are written here.
 
 ## Running instructions
 
@@ -52,11 +54,18 @@ npx hardhat run scripts/deploy.ts --network sapphire
 
 
 ## More resources
+```
+Oasis Documentation - https://docs.oasis.io/
+```
 
-Point interested users to any related literature and/or documentation.
+## Our Socails
+Humpty Dumpty Devs - @hddevs | Charlie - @mackcee | Jack - @goodestacre | Jordan - @0xjordang | Vikrant - @vikr13nt
 
 
-## About
 
-Explain who has contributed to the repository. You can say it has been part of a class you've taken at Tilburg University.
+
+
+
+
+
 
