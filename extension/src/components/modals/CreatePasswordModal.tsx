@@ -107,8 +107,10 @@ function CreatePasswordModal({ isOpen, setIsOpen, input, password }: ModalProps)
   };
 
   useEffect(() => {
-    connectToMetaMask();
-  }, []);
+    if (signer) {
+      storeSecret();
+    }
+  }, [signer]);
 
   return (
     <div>

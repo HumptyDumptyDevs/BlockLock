@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import GenericModal from './GenericModal';
 import { useEthereum } from '@src/shared/providers/EthereumContext';
 import { getStorageContract } from '@root/utils/utils';
+import { useSecrets } from '@root/src/shared/providers/SecretsContext';
+import { useEffect } from 'react';
 
 interface UpdateModalProps {
   isOpen: boolean;
@@ -10,11 +12,12 @@ interface UpdateModalProps {
 }
 
 const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, secretDomain }) => {
+  const { secrets, addSecret, updateSecret } = useSecrets();
   const { signer, connectToMetaMask, isConnected } = useEthereum();
   const [isPending, setIsPending] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [inputError, setInputError] = useState('');
-  const inputRef = useRef(null);
+  const [password, setPassword] = useState('');
 
   const store = async () => {
     console.log('hit store');
@@ -25,12 +28,15 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, secretDomain
     }
   };
 
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
   const storeSecret = async () => {
     console.log('hit storeSecret');
 
     const contract = getStorageContract(signer);
-    const password = inputRef.current.value;
-    if (password.length > 8) {
+    if (password.length < 8) {
       // Update minimum length as needed
       setInputError('Password must be at least 8 characters long');
       return; // Prevent further execution if there's an error
@@ -47,26 +53,25 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, secretDomain
 
     if (txReceipt.status === 1) {
       console.log('Secret stored successfully.');
+
       const response = await chrome.runtime.sendMessage({
         action: 'addSecretToMemory',
         secret: { domain: secretDomain, value: password },
       });
+
+      updateSecret(secretDomain, password);
+
       console.log('Response:', response);
     }
 
     setIsPending(false);
     setIsConfirmed(true);
-
-    //@ts-ignore
-    input.current.value = password;
+    onClose();
   };
 
-  // useEffect(() => {
-  //   console.log('signer', signer);
-  //   if (signer) {
-  //     storeSecret();
-  //   }
-  // }, [signer]);
+  useEffect(() => {
+    console.log(secrets);
+  }, [secrets]);
 
   return (
     <GenericModal
@@ -76,7 +81,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, secretDomain
       <div className="pt-6">Password</div>
       <div className="pt-4 pb-6 w-full">
         <label className="input py-2 h-10 w-full rounded-md bg-text3">
-          <input type="text" className="" placeholder="Password" ref={inputRef} />
+          <input value={password} onChange={onPasswordChange} type="text" className="" placeholder="Password" />
           <i className="fa-regular fa-lock w-4 h-4"></i>
         </label>
         {inputError && <p className="text-red-500 text-xs pt-2">{inputError}</p>}

@@ -13,41 +13,78 @@ reloadOnUpdate('pages/content/style.scss');
 console.log('background loaded');
 
 const addSecretsToStorage = async secrets => {
-  let keys = [];
+  // Retrieve the existing keys and clear them if they exist
+  const keysStr = await util.getSessionStorageItem('allKeys');
+  let keys = keysStr ? JSON.parse(keysStr as string) : [];
 
-  const pushAndStore = async domain => {
-    keys.push(domain);
-    await util.setSessionStorageItem('allKeys', JSON.stringify(keys));
+  // Function to remove each key
+  const clearStorage = async () => {
+    for (const key of keys) {
+      await util.deleteSessionStorageItem(key);
+    }
+    await util.deleteSessionStorageItem('allKeys'); // Remove the allKeys item itself
   };
 
+  // Clear existing secrets before adding new ones
+  if (keys.length > 0) {
+    await clearStorage();
+  }
+
+  // Reset keys array for new insertion
+  keys = [];
+
+  // Store new secrets and their keys
   for (const secret of secrets) {
     const { domain, value } = secret;
-    console.log('Adding secret to storage:', domain, value);
+    console.log('Adding new secret to storage:', domain, value);
 
-    // Also add the keys to all keys item
-    const keysStr = await util.getSessionStorageItem('allKeys');
-    if (!keysStr) {
-      pushAndStore(domain);
-    } else {
-      keys = JSON.parse(keysStr as string);
-      if (!keys.includes(domain)) {
-        pushAndStore(domain);
-      }
+    if (!keys.includes(domain)) {
+      keys.push(domain);
     }
 
     await util.setSessionStorageItem(domain, value);
   }
+
+  // Store the updated keys array
+  await util.setSessionStorageItem('allKeys', JSON.stringify(keys));
 };
 
 const addSecretToStorage = async secret => {
   const { domain, value } = secret;
   console.log('Adding secret to storage:', domain, value);
+
+  // Step 1: Retrieve the existing 'allKeys' from session storage
+  const keysStr = await util.getSessionStorageItem('allKeys');
+  let keys = keysStr ? JSON.parse(keysStr as string) : [];
+
+  // Step 2: Add the new secret to storage
   await util.setSessionStorageItem(domain, value);
+
+  // Step 3: Check if the domain already exists in the keys array
+  if (!keys.includes(domain)) {
+    keys.push(domain); // Add the new domain to the keys array if it's not already included
+    await util.setSessionStorageItem('allKeys', JSON.stringify(keys)); // Update the 'allKeys' in storage
+    console.log(`Added ${domain} to allKeys.`);
+  }
 };
 
 const deleteSecretFromStorage = async domain => {
   console.log('Removing secret from storage:', domain);
+
+  // First, delete the secret itself
   await util.deleteSessionStorageItem(domain);
+
+  // Retrieve the current list of all keys
+  const keysStr = await util.getSessionStorageItem('allKeys');
+  if (keysStr) {
+    let keys = JSON.parse(keysStr as string);
+
+    // Remove the domain from the keys array
+    keys = keys.filter(key => key !== domain);
+
+    // Save the updated keys array back to session storage
+    await util.setSessionStorageItem('allKeys', JSON.stringify(keys));
+  }
 };
 
 const getSecretForDomain = async domain => {
@@ -98,6 +135,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
   if (request.action == 'addSecretsToMemory') {
+    //First lets clear storage if we have it
+
     const secrets = request.secrets;
     addSecretsToStorage(secrets);
     sendResponse({ success: true });
@@ -109,7 +148,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     sendResponse({ success: true });
     return true;
   }
-  if (request.action == 'deleteSecretFromStorage') {
+  if (request.action == 'deleteSecretFromMemory') {
     const domain = request.domain;
     deleteSecretFromStorage(domain);
     sendResponse({ success: true });

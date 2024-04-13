@@ -5,9 +5,9 @@ import { expect } from "chai";
 describe("SecretStore", () => {
   async function deploySecretStore() {
     const contract = await hre.ethers.deployContract("SecretStore");
-    const [owner] = await hre.ethers.getSigners();
+    const [owner, testUser] = await hre.ethers.getSigners();
 
-    return { contract, owner };
+    return { contract, owner, testUser };
   }
 
   // TODO: Issue with hardhat-chai-matchers: Error: Invalid Chai property: emit. Did you mean "exist"?
@@ -67,5 +67,21 @@ describe("SecretStore", () => {
     await contract.deleteSecret(secret.domain);
     secrets = await contract.getSecrets();
     expect(secrets).to.be.an("array").that.is.empty;
+  });
+
+  it("should transfer the secret to the right address", async () => {
+    const { contract, owner, testUser } = await deploySecretStore();
+    const secret = { domain: "www.test.com", secret: "password123" };
+
+    await contract.setSecret(secret.domain, secret.secret);
+
+    await expect(contract.shareSecret(testUser.address, secret.domain))
+      .to.emit(contract, "SecretShared")
+      .withArgs(owner.address, testUser.address, secret.domain);
+
+    const secretsOfRecipient = await contract.connect(testUser).getSecrets();
+    expect(secretsOfRecipient.length).to.equal(1);
+    expect(secretsOfRecipient[0].domain).to.equal(secret.domain);
+    expect(secretsOfRecipient[0].secret).to.equal(secret.secret);
   });
 });
