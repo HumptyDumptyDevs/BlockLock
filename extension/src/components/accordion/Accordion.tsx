@@ -28,13 +28,13 @@ const Accordion = () => {
   };
 
   const handleUpdateClick = secret => {
-    setSecretToUpdate('dummy');
+    setSecretToUpdate(secret);
     console.log('isUpdateModalOpen changed to:', !isUpdateModalOpen);
     setIsUpdateModalOpen(true);
   };
 
   const handleDeleteClick = secret => {
-    setSecretToDelete('dummy');
+    setSecretToDelete(secret);
     console.log('isDeleteModalOpen changed to:', !isDeleteModalOpen);
     setIsDeleteModalOpen(true);
   };
