@@ -65,9 +65,9 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, secretDomain
             onClick={() => {
               remove();
             }}>
-            Update on-chain
+            Delete on-chain
             <div className="flex justify-center items-center h-4 my-auto">
-              <i className="fa-regular fa-lock w-4 h-4"></i>
+              <i className="fa-solid fa-arrow-up-right-from-square w-4 h-4"></i>
             </div>
           </button>
         ) : isPending ? (
