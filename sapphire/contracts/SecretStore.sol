@@ -17,6 +17,11 @@ contract SecretStore {
     event SecretStored(address indexed owner, string indexed domain); // Event for store success
     event SecretUpdated(address indexed owner, string indexed domain); // Event for update success
     event SecretDeleted(address indexed owner, string indexed domain); // Event for delete success
+    event SecretShared(
+        address indexed owner,
+        address indexed recipient,
+        string indexed domain
+    ); // Event for sharing success
 
     function setSecret(
         string calldata _domain,
@@ -82,5 +87,23 @@ contract SecretStore {
     function getSecrets() public view returns (Secret[] memory) {
         // console.log("Hit getSecrets: %s", s_secrets[msg.sender]);
         return s_secrets[msg.sender];
+    }
+
+    function shareSecret(address _recipient, string calldata _domain) external {
+        // 1. Find the secret to share
+        uint256 secretIndex = findSecretIndex(_domain);
+        require(
+            secretIndex != s_secrets[msg.sender].length,
+            "Secret not found"
+        );
+
+        // 2. Retrieve the secret
+        Secret memory secretToShare = s_secrets[msg.sender][secretIndex];
+
+        // 3. Add the secret to the recipient's storage
+        s_secrets[_recipient].push(secretToShare);
+
+        // Optional: Emit an event for tracking (similar to your other events)
+        emit SecretShared(msg.sender, _recipient, _domain);
     }
 }
