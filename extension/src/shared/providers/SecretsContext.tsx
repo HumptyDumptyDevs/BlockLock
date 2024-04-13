@@ -8,6 +8,9 @@ export interface Secret {
 export interface SecretsData {
   secrets: Secret[];
   addSecret: (newSecret: Secret) => void;
+  deleteSecret: (domain: string) => void;
+  updateSecret: (domain: string, newValue: string) => void;
+  deleteAllSecrets: () => void;
   // You can also include functions to remove or update secrets as needed.
 }
 
@@ -21,7 +24,28 @@ export const SecretsProvider = ({ children }: { children: ReactNode }) => {
     setSecrets(currentSecrets => [...currentSecrets, newSecret]);
   }, []);
 
-  return <SecretsContext.Provider value={{ secrets, addSecret }}>{children}</SecretsContext.Provider>;
+  // Function to delete a secret from the secrets array
+  const deleteSecret = useCallback((domain: string) => {
+    setSecrets(currentSecrets => currentSecrets.filter(secret => secret.domain !== domain));
+  }, []);
+
+  // Function to update a secret value
+  const updateSecret = useCallback((domain: string, newValue: string) => {
+    setSecrets(currentSecrets =>
+      currentSecrets.map(secret => (secret.domain === domain ? { ...secret, value: newValue } : secret)),
+    );
+  }, []);
+
+  // Function to delete all secrets
+  const deleteAllSecrets = useCallback(() => {
+    setSecrets([]);
+  }, []);
+
+  return (
+    <SecretsContext.Provider value={{ secrets, addSecret, deleteSecret, updateSecret, deleteAllSecrets }}>
+      {children}
+    </SecretsContext.Provider>
+  );
 };
 
 export function useSecrets() {

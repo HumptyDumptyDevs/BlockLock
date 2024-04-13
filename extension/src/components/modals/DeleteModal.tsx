@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import GenericModal from './GenericModal';
 import { useEthereum } from '@src/shared/providers/EthereumContext';
 import { getStorageContract } from '@root/utils/utils';
+import { useSecrets } from '@root/src/shared/providers/SecretsContext';
 
 interface DeleteModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface DeleteModalProps {
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, secretDomain }) => {
+  const { deleteSecret } = useSecrets();
   const { signer, connectToMetaMask, isConnected } = useEthereum();
   const [isPending, setIsPending] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -19,11 +21,11 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, secretDomain
     if (!isConnected) {
       await connectToMetaMask();
     } else {
-      deleteSecret();
+      removeSecret();
     }
   };
 
-  const deleteSecret = async () => {
+  const removeSecret = async () => {
     console.log('hit delete');
 
     const contract = getStorageContract(signer);
@@ -35,15 +37,20 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, secretDomain
 
     if (txReceipt.status === 1) {
       console.log('Secret stored successfully.');
+      console.log('Deleting secret from memory', secretDomain);
       const response = await chrome.runtime.sendMessage({
-        action: 'removeSecretFromMemory',
-        secret: { domain: secretDomain },
+        action: 'deleteSecretFromMemory',
+        domain: secretDomain,
       });
+
+      deleteSecret(secretDomain);
+
       console.log('Response:', response);
     }
 
     setIsPending(false);
     setIsConfirmed(true);
+    onClose();
   };
 
   return (
@@ -65,9 +72,9 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, secretDomain
             onClick={() => {
               remove();
             }}>
-            Delete on-chain
+            Delete
             <div className="flex justify-center items-center h-4 my-auto">
-              <i className="fa-solid fa-arrow-up-right-from-square w-4 h-4"></i>
+              <i className="fa-sharp fa-regular fa-trash"></i>
             </div>
           </button>
         ) : isPending ? (
@@ -80,7 +87,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, onClose, secretDomain
         ) : (
           <div className="flex items-center justify-between px-5 py-2 h-full my-auto w-full">
             <div className="text-primary1 whitespace-nowrap text-sm flex justify-between items-center gap-6 w-full">
-              <span>Saved</span>
+              <span>Deleted</span>
               <i className="fa-duotone fa-check w-4 h-4"></i>
             </div>
           </div>
