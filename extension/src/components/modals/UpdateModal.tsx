@@ -79,14 +79,16 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, secretDomain
       onClose={onClose}
       title={`Update password for: ${secretDomain.replace(/^www\./, '')}`}>
       <div className="pt-6">Password</div>
-      <input
-        type="text"
-        className="input py-2 h-10 w-full rounded-md bg-text3"
-        placeholder="Password"
-        value={password}
-        onChange={onPasswordChange}
-      />
-
+      <div className="pt-2 pb-6 w-full">
+        <input
+          type="text"
+          className="input py-2 h-10 w-full rounded-md bg-text3"
+          placeholder="Password"
+          value={password}
+          onChange={onPasswordChange}
+        />
+        {inputError && <p className="text-red-500 text-xs pt-2">{inputError}</p>}
+      </div>
       <div className="flex justify-between gap-4">
         <button
           className="whitespace-nowrap flex items-center justify-center text-center w-full h-full text-primary1 hover:bg-primary2 hover:text-background3 focus:ring-4 focus:ring-primary2 border border-solid border-0.25 border-background5 font-medium rounded text-sm px-5 py-2 focus:outline-none"
