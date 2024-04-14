@@ -16,15 +16,15 @@ This repo is made up of two main sections, the extension(React.js) and the sapph
 
 ## Repository overview
 
-- extension: Front end of the extension.
-      - public: Images used are stored here.
-      - src: main functionallity of the app.
-          -components: React components.
+- extension: Front end of the extension.   
+      - public: Images used are stored here.   
+      - src: main functionallity of the app.     
+          -components: React components.   
           -pages: pages for the extension.
     
-- sapphire: Where the smart contracts of the app are.
-      - contracts: smart contract is stored here.
-      - test: tests are written here.
+- sapphire: Where the smart contracts of the app are.   
+      - contracts: smart contract is stored here.   
+      - test: tests are written here.   
 
 ## Running instructions
 
