@@ -16,18 +16,6 @@ This mono-repo is made up of two main components:
 1. `./extension` - Browser extension 
 2. `./sapphire` - Sapphire smart contract
 
-## Repository overview
-
-- extension: Front end of the extension.   
-      - public: Images used are stored here.   
-      - src: main functionallity of the app.     
-          -components: React components.   
-          -pages: pages for the extension.
-    
-- sapphire: Where the smart contracts of the app are.   
-      - contracts: smart contract is stored here.   
-      - test: tests are written here.   
-
 ## Running instructions
 
 **Extension**
