@@ -30,24 +30,38 @@ This mono-repo is made up of two main components:
 
 ## Running instructions
 
-To run the extension:
+**Extension**
+
+1. Build the extension
 ```bash
+cd extension
 pnpm install
-pnpm run dev
-
+pnpm dev
 ```
-To configure sapphire smart contract:
 
+2. This will create a `dist/` folder that can be loaded into any Chrome-based browser following steps [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+
+**Contract**
+
+1. Compile the contract
 ```bash
+cd sapphire
 pnpm install
 pnpm hardhat compile
 ```
 
-To deploy on testnet:
+2. Test the contract
+```bash
+npx hardhat test tests/SecretStore.test.ts
+npx hardhat run scripts/deploy.ts --network sapphire-testnet
+```
+
+3. Deploy on testnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire-testnet
 ```
-To deploy on Mainnet:
+
+4. Deploy on mainnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire
 ```
