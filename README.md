@@ -18,46 +18,64 @@ This mono-repo is made up of two main components:
 2. `./sapphire` - Sapphire smart contract
 
 ## Running instructions
-
-**Extension**
-
-1. Build the extension
+**Contract**
+1. Create a `.env` file with your private key
 ```bash
-cd extension
-pnpm install
-pnpm dev
+cd sapphire
+touch .env
+
+Set the following keys:
+PRIVATE_KEY=...
 ```
 
-2. This will create a `dist/` folder that can be loaded into any Chrome-based browser following steps [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
-
-**Contract**
-
-1. Compile the contract
+2. Compile the contract
 ```bash
 cd sapphire
 pnpm install
 pnpm hardhat compile
 ```
 
-2. Test the contract
+3. Test the contract
 ```bash
 npx hardhat test tests/SecretStore.test.ts
 ```
 
-3. Deploy on testnet:
+4. Deploy on testnet or mainnet:
 ```bash
+testnet:
 npx hardhat run scripts/deploy.ts --network sapphire-testnet
-```
 
-4. Deploy on mainnet:
-```bash
+mainnet:
 npx hardhat run scripts/deploy.ts --network sapphire
 ```
+
+**Extension**
+
+1. Create a `.env` file with your private key
+```bash
+cd extension
+touch .env
+
+Set the following keys:
+VITE_METAMASK_EXT_ID=nkbihfbeogaeaoehlefnkodbefgpgknn
+VITE_STORAGE_CONTRACT_ADDRESS=0x744c272c12D6c2417a0a99C69CaAD3719bc14E1C
+```
+
+2. Build the extension
+```bash
+pnpm install
+pnpm dev
+```
+
+3. This will create a `dist/` folder that can be loaded into any Chrome-based browser following steps [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+
+
 
 ## More resources
 ```
 Oasis Documentation - https://docs.oasis.io/
 ```
+We have deployed & verified a version of this contract on Sapphire testnet which you can use: https://explorer.oasis.io/search?q=0x744c272c12D6c2417a0a99C69CaAD3719bc14E1C
 
 ## Our Socials
 Humpty Dumpty Devs - [@hddevs](https://twitter.com/hddevs) | Charlie - [@mackcee](https://twitter.com/mackcee) | Jack - [@goodestacre](https://twitter.com/goodestacre) | Jordan - [@0xjordang](https://twitter.com/0xjordang) | Vikrant - [@vikr13nt](https://twitter.com/vikr13nt)
