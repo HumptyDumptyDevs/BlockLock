@@ -53,7 +53,6 @@ pnpm hardhat compile
 2. Test the contract
 ```bash
 npx hardhat test tests/SecretStore.test.ts
-npx hardhat run scripts/deploy.ts --network sapphire-testnet
 ```
 
 3. Deploy on testnet:
@@ -72,7 +71,7 @@ Oasis Documentation - https://docs.oasis.io/
 ```
 
 ## Our Socails
-Humpty Dumpty Devs - @hddevs | Charlie - @mackcee | Jack - @goodestacre | Jordan - @0xjordang | Vikrant - @vikr13nt
+Humpty Dumpty Devs - [@hddevs](https://twitter.com/hddevs) | Charlie - [@mackcee](https://twitter.com/mackcee) | Jack - [@goodestacre](https://twitter.com/goodestacre) | Jordan - [@0xjordang](https://twitter.com/0xjordang) | Vikrant - [@vikr13nt](https://twitter.com/vikr13nt)
 
 
 
