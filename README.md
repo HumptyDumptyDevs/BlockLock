@@ -7,7 +7,7 @@ BlockLock attempts to redefine the definition of secure password management. We 
 
 ## What is BlockLock
 BlockLock is a web extension that works similarly to web2 password manager plugins like 1Pass, however the difference is that the storing of sensitve data is done on chain.
-We chose to store data on Oasis chain simply because they are privacy focused and it is easy to encrupt data and store it on chain.
+We chose to store data on Oasis chain simply because they are privacy focused and it is easy to encrypt data and store it on chain.
 
 
 ## Layout
@@ -22,7 +22,6 @@ This repo is made up of two main sections, the extension(React.js) and the sapph
           -components: React components.
           -pages: pages for the extension.
     
-
 - sapphire: Where the smart contracts of the app are.
       - contracts: smart contract is stored here.
       - test: tests are written here.
@@ -50,8 +49,6 @@ To deploy on Mainnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire
 ```
-
-
 
 ## More resources
 ```
