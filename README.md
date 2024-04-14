@@ -42,11 +42,11 @@ pnpm install
 pnpm hardhat compile
 ```
 
-To run on testnet:
+To deploy on testnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire-testnet
 ```
-To run on Mainnet:
+To deploy on Mainnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire
 ```
