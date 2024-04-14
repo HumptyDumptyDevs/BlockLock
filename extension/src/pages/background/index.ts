@@ -66,6 +66,13 @@ const addSecretToStorage = async secret => {
     await util.setSessionStorageItem('allKeys', JSON.stringify(keys)); // Update the 'allKeys' in storage
     console.log(`Added ${domain} to allKeys.`);
   }
+
+  console.log('Sending message to app');
+
+  chrome.runtime.sendMessage({
+    action: 'secretsUpdated',
+    secret: secret,
+  });
 };
 
 const deleteSecretFromStorage = async domain => {

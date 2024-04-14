@@ -1,65 +1,66 @@
 ## BlockLock
-BlockLock was created during the Ethdam 2024 hackathon.
+BlockLock was created during the [Ethdam](https://www.ethdam.com/) 2024 Hackathon.
 
 
 ## Our purpose
-BlockLock attempts to redefine the definition of secure password management. We are addressing a crucial problem, the improper storage and hadnling of user's passwords.
+BlockLock attempts to bridge the gap between traditional web2 user experience and the advantages of using a confidential and decentralised environment. 
+
 
 ## What is BlockLock
-BlockLock is a web extension that works similarly to web2 password manager plugins like 1Pass, however the difference is that the storing of sensitve data is done on chain.
-We chose to store data on Oasis chain simply because they are privacy focused and it is easy to encrupt data and store it on chain.
+BlockLock is a web extension that works similarly to web2 password manager plugins like 1Pass, however the difference is that data is stored on chain.
+Oasis was a great fit for the project with Sapphire's encrypted storage of data & private execution environment to maintain confidentiality.
 
 
 ## Layout
-This repo is made up of two main sections, the extension(React.js) and the sapphire smart contract(Solidity)
+This mono-repo is made up of two main components:
 
-
-## Repository overview
-
-- extension: Front end of the extension.
-      - public: Images used are stored here.
-      - src: main functionallity of the app.
-          -components: React components.
-          -pages: pages for the extension.
-    
-
-- sapphire: Where the smart contracts of the app are.
-      - contracts: smart contract is stored here.
-      - test: tests are written here.
+1. `./extension` - Browser extension 
+2. `./sapphire` - Sapphire smart contract
 
 ## Running instructions
 
-To run the extension:
+**Extension**
+
+1. Build the extension
 ```bash
+cd extension
 pnpm install
-pnpm run dev
-
+pnpm dev
 ```
-To configure sapphire smart contract:
 
+2. This will create a `dist/` folder that can be loaded into any Chrome-based browser following steps [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+
+**Contract**
+
+1. Compile the contract
 ```bash
+cd sapphire
 pnpm install
 pnpm hardhat compile
 ```
 
-To run on testnet:
+2. Test the contract
+```bash
+npx hardhat test tests/SecretStore.test.ts
+```
+
+3. Deploy on testnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire-testnet
 ```
-To run on Mainnet:
+
+4. Deploy on mainnet:
 ```bash
 npx hardhat run scripts/deploy.ts --network sapphire
 ```
-
-
 
 ## More resources
 ```
 Oasis Documentation - https://docs.oasis.io/
 ```
 
-## Our Socails
-Humpty Dumpty Devs - @hddevs | Charlie - @mackcee | Jack - @goodestacre | Jordan - @0xjordang | Vikrant - @vikr13nt
+## Our Socials
+Humpty Dumpty Devs - [@hddevs](https://twitter.com/hddevs) | Charlie - [@mackcee](https://twitter.com/mackcee) | Jack - [@goodestacre](https://twitter.com/goodestacre) | Jordan - [@0xjordang](https://twitter.com/0xjordang) | Vikrant - [@vikr13nt](https://twitter.com/vikr13nt)
 
 
 

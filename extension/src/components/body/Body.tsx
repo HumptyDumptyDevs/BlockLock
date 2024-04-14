@@ -51,6 +51,22 @@ const Body: React.FC = () => {
         });
       }
     });
+
+    const handleNewSecret = (request, sender, sendResponse) => {
+      console.log('request', request);
+      if (request.action == 'secretsUpdated') {
+        addSecret(request.secret);
+        console.log('Secret added to memory time to refresh:', request.secret);
+        sendResponse({ success: true });
+        return true;
+      }
+    };
+
+    chrome.runtime.onMessage.addListener(handleNewSecret);
+
+    return () => {
+      chrome.runtime.onMessage.removeListener(handleNewSecret);
+    };
   }, []);
 
   return (
