@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UpdateModal from '../modals/UpdateModal';
+import ShareModal from '../modals/ShareModal';
 import DeleteModal from '../modals/DeleteModal';
 import { json } from 'stream/consumers';
 import { useSecrets } from '@root/src/shared/providers/SecretsContext';
@@ -9,6 +10,8 @@ const Accordion = () => {
 
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [secretToUpdate, setSecretToUpdate] = useState(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [secretToShare, setSecretToShare] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [secretToDelete, setSecretToDelete] = useState(null);
   const [visibleSecrets, setVisibleSecrets] = useState(
@@ -31,6 +34,12 @@ const Accordion = () => {
     setSecretToUpdate(secret);
     console.log('isUpdateModalOpen changed to:', !isUpdateModalOpen);
     setIsUpdateModalOpen(true);
+  };
+
+  const handleShareClick = secret => {
+    setSecretToShare(secret);
+    console.log('isShareModalOpen changed to:', !isShareModalOpen);
+    setIsShareModalOpen(true);
   };
 
   const handleDeleteClick = secret => {
@@ -81,6 +90,11 @@ const Accordion = () => {
                     Update
                   </button>
                   <button
+                    onClick={() => handleShareClick(secret.domain)}
+                    className="whitespace-nowrap flex justify-between w-full h-full text-primary1 hover:bg-primary2 hover:text-background3 focus:ring-4 focus:ring-primary2 border border-solid border-0.25 border-text2 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+                    Share
+                  </button>
+                  <button
                     onClick={() => handleDeleteClick(secret.domain)}
                     className="whitespace-nowrap flex justify-between w-full h-full text-primary1 hover:bg-primary2 hover:text-background3 focus:ring-4 focus:ring-primary2 border border-solid border-0.25 border-text2 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                     Delete
@@ -97,6 +111,13 @@ const Accordion = () => {
           isOpen={isUpdateModalOpen}
           onClose={() => setIsUpdateModalOpen(false)}
           secretDomain={secretToUpdate} // Pass the secret data
+        />
+      )}
+      {isShareModalOpen && (
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          secretDomain={secretToShare} // Pass the secret data
         />
       )}
       {isDeleteModalOpen && (

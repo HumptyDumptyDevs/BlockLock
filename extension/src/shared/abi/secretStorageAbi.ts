@@ -29,6 +29,31 @@ export const abi = [
       },
       {
         indexed: true,
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'string',
+        name: 'domain',
+        type: 'string',
+      },
+    ],
+    name: 'SecretShared',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        indexed: true,
         internalType: 'string',
         name: 'domain',
         type: 'string',
@@ -108,6 +133,24 @@ export const abi = [
       },
     ],
     name: 'setSecret',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_recipient',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: '_domain',
+        type: 'string',
+      },
+    ],
+    name: 'shareSecret',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
