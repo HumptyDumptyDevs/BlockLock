@@ -3,7 +3,8 @@ BlockLock was created during the [Ethdam](https://www.ethdam.com/) 2024 Hackatho
 
 
 ## Our purpose
-BlockLock attempts to democratise decentralised privacy by lowering the barrier to entry.
+BlockLock attempts to bridge the gap between traditional web2 user experience and the advantages of using a confidential and decentralised environment. 
+
 
 ## What is BlockLock
 BlockLock is a web extension that works similarly to web2 password manager plugins like 1Pass, however the difference is that data is stored on chain.
