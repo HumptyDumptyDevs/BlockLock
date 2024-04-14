@@ -15,7 +15,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, secretDomain }
   const [isPending, setIsPending] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [inputError, setInputError] = useState('');
-  const inputRef = useRef(null);
+  const [address, setAddress] = useState('');
 
   // EVM Address Validation with ethers
   const isValidEvmAddress = address => {
@@ -36,11 +36,14 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, secretDomain }
     }
   };
 
+  const onAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value);
+  };
+
   const shareSecret = async () => {
     console.log('hit shareSecret');
 
     const contract = getStorageContract(signer);
-    const address = inputRef.current.value;
     // Address Validation
     if (!isValidEvmAddress(address)) {
       setInputError('Please enter a valid EVM address');
@@ -58,9 +61,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, secretDomain }
 
     setIsPending(false);
     setIsConfirmed(true);
-
-    //@ts-ignore
-    input.current.value = address;
+    onClose();
   };
 
   return (
@@ -71,7 +72,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, secretDomain }
           type="text"
           className="input py-2 h-10 w-full rounded-md bg-text3"
           placeholder="Address"
-          ref={inputRef}
+          value={address}
+          onChange={onAddressChange}
         />
         {inputError && <p className="text-red-500 text-xs pt-2">{inputError}</p>}
       </div>

@@ -117,7 +117,6 @@ const Accordion = () => {
         <ShareModal
           isOpen={isShareModalOpen}
           onClose={() => setIsShareModalOpen(false)}
-          recipient={} // Pass the recipient data
           secretDomain={secretToShare} // Pass the secret data
         />
       )}
